@@ -1,6 +1,6 @@
 # Open Cheating Network
 
-A distributed WebSocket chat system for Roblox exploits, allowing multiple scripts across different servers to communicate seamlessly.
+A distributed WebSocket communication system for Roblox scripts, allowing multiple scripts across different servers to communicate.
 
 Used in various Roblox exploit scripts for cross-server communication.
 
