@@ -9,19 +9,19 @@ import requests
 from collections import defaultdict, deque
 
 CONFIG = {
-    "secret_key": "swimdroid_is_a_furry",
-    "bridge_secret": "yellow_is_a_bad_bih",
+    "secret_key": "swimdroid_is_a_furry", # CHANGE THIS
+    "bridge_secret": "yellow_is_a_bad_bih", # CHANGE THIS
     "max_users_per_ip": 1,
     "rate_limit_messages": 20,
     "rate_limit_window": 10,
     "max_message_length": 500,
     "max_username_length": 20,
     "heartbeat_timeout": 10,
-    "discord_webhook": "",
+    "discord_webhook": "", # sends all messages sent between users to this webhook
     "bridge_servers": [
-        {"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}, # example testing stuff
+        {"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}, # example testing stuff make sure secret matches the other servers bridge secret (you can put as many servers as u want)
     ] 
-}
+} 
 
 class RateLimiter:
     def __init__(self, max_requests, window_seconds):
@@ -532,8 +532,8 @@ def cleanup_inactive_users():
 
 def make_app():
     return tornado.web.Application([
-        (r"/swimhub", IntegrationHandler),
-        (r"/chronos", BridgeHandler),
+        (r"/swimhub", IntegrationHandler), # change if u want
+        (r"/chronos", BridgeHandler), # change if u want
     ])
 
 if __name__ == "__main__":
