@@ -1,7 +1,7 @@
-local IntegrationService = loadstring(request({Url = "https://chronos.rip/static/inter.lua", Method = "Get"}).Body)()
+local IntegrationService = loadstring(request({Url = "https://raw.githubusercontent.com/YellowFireFighter/Open-Cheating-Network/refs/heads/main/Client/Main.lua", Method = "Get"}).Body)()
 
 IntegrationService.Init({
-    serverUrl = "wss://chronos.rip/swimhub",
+    serverUrl = "wss://localhost:8888/swimhub",
     heartbeatInterval = 5,
     autoReconnect = true,
     hidden = false
