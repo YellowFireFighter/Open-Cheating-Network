@@ -33,9 +33,9 @@ CONFIG = {
     "max_message_length": 500,
     "max_username_length": 20,
     "heartbeat_timeout": 10,
-    "discord_webhook": "https://discord.com/api/webhooks/...",
+    "discord_webhook": "",
     "bridge_servers": [
-        {"url": "http://example-server.com:8888/chronos", "secret": "their-secret"}
+        {"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}
     ]
 }
 ```
