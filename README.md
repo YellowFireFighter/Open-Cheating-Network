@@ -8,7 +8,7 @@ Used in various Roblox exploit scripts for cross-server communication.
 
 - **Bridge System**: Servers automatically sync messages and user lists
 - **Discord Integration**: Optional webhook support for logging messages
-- **IP-based Limits**: Configurable user limits per IP address
+- **IP Locked**: Configurable user limits per IP address
 
 ## Server Setup
 
