@@ -721,7 +721,7 @@ integration_service.OnError.Event:Connect(function(error_message, timestamp)
 end)
 
 integration_service.Init({
-    serverUrl = "wss://chronos.rip/swimhub",
+    serverUrl = "ws://localhost:8888/swimhub",
     heartbeatInterval = 5,
     autoReconnect = false,
     hidden = false
