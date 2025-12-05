@@ -19,7 +19,7 @@ CONFIG = {
     "heartbeat_timeout": 10,
     "discord_webhook": "", # sends all messages sent between users to this webhook
     "bridge_servers": [
-        {"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}, # example testing stuff make sure secret matches the other servers bridge secret (you can put as many servers as u want)
+        #{"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}, # example testing stuff make sure secret matches the other servers bridge secret (you can put as many servers as u want)
     ] 
 } 
 
@@ -394,7 +394,11 @@ class IntegrationHandler(tornado.websocket.WebSocketHandler):
     
     def send_message(self, data):
         data["timestamp"] = time.time()
-        self.write_message(json.dumps(data))
+        
+        try:
+            self.write_message(json.dumps(data))
+        except Exception as e:
+            print("Failed to send data " + Exception)
     
     def send_error(self, message):
         self.send_message({
