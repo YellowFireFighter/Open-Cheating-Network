@@ -6,6 +6,7 @@ import time
 import hashlib
 import hmac
 import requests
+import threading
 from collections import defaultdict, deque
 
 CONFIG = {
@@ -374,7 +375,8 @@ class IntegrationHandler(tornado.websocket.WebSocketHandler):
         
         send_to_local_webhook(self.username, message)
     
-        bridge_message(self.username, message)
+        thread = threading.Thread(target=bridge_message, args=(self.username, message), daemon=True)
+        thread.start()
     
     def handle_heartbeat(self):
         connection_manager.update_heartbeat(self.username)
