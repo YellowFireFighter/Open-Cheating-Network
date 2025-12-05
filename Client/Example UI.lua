@@ -1,4 +1,4 @@
--- Shit ui made with gui to lua but u can use if u want ig
+-- Shit ui made with gui to lua but u can use if u want ig (vibe coded)
 local IntegrationService = loadstring(request({Url = "https://raw.githubusercontent.com/YellowFireFighter/Open-Cheating-Network/refs/heads/main/Client/Main.lua", Method = "Get"}).Body)()
 
 local active_tab = "chat"
