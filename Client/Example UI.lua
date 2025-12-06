@@ -8,6 +8,7 @@ local is_connected = false
 local is_hidden = false
 local current_username = ""
 local tween_service = game:GetService("TweenService")
+local is_animating = false
 
 local function create(class, props)
     local inst = Instance.new(class)
@@ -125,11 +126,20 @@ local close_button = create("TextButton", {
     Parent = header_frame
 })
 
+local close_gradient = create("UIGradient", {
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 180, 180))
+    },
+    Rotation = 90,
+    Parent = close_button
+})
+
 close_button.MouseButton1Click:Connect(function()
     tween(main_frame, {Position = UDim2.new(0.5, -240, 0.5, -350)}, 0.3)
     task.wait(0.3)
     screen_gui:Destroy()
-    IntegrationService.Disconnect()
+    integration_service.Disconnect()
 end)
 
 local hidden_button = create("TextButton", {
@@ -144,6 +154,15 @@ local hidden_button = create("TextButton", {
     TextSize = 11,
     Font = Enum.Font.Code,
     Parent = header_frame
+})
+
+local hidden_gradient = create("UIGradient", {
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 180, 180))
+    },
+    Rotation = 90,
+    Parent = hidden_button
 })
 
 local tabs_frame = create("Frame", {
@@ -166,11 +185,11 @@ local tabs_border = create("Frame", {
 
 local chat_tab = create("TextButton", {
     Name = "chat_tab",
-    Size = UDim2.new(0.5, -1, 0, 30),
-    Position = UDim2.new(0, 0, 0, 5),
+    Size = UDim2.new(0.5, -6, 0, 30),
+    Position = UDim2.new(0, 5, 0, 5),
     BackgroundColor3 = Color3.fromRGB(100, 80, 180),
     BorderColor3 = Color3.fromRGB(120, 100, 200),
-    BorderSizePixel = 1,
+    BorderSizePixel = 2,
     Text = "Chatbox",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextSize = 12,
@@ -180,16 +199,44 @@ local chat_tab = create("TextButton", {
 
 local users_tab = create("TextButton", {
     Name = "users_tab",
-    Size = UDim2.new(0.5, -1, 0, 30),
-    Position = UDim2.new(0.5, 2, 0, 5),
+    Size = UDim2.new(0.5, -6, 0, 30),
+    Position = UDim2.new(0.5, 1, 0, 5),
     BackgroundColor3 = Color3.fromRGB(40, 40, 50),
     BorderColor3 = Color3.fromRGB(60, 60, 80),
-    BorderSizePixel = 1,
+    BorderSizePixel = 2,
     Text = "Users",
     TextColor3 = Color3.fromRGB(150, 150, 160),
     TextSize = 12,
     Font = Enum.Font.Code,
     Parent = tabs_frame
+})
+
+local chat_gradient = create("UIGradient", {
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 180, 180))
+    },
+    Rotation = 90,
+    Parent = chat_tab
+})
+
+local users_gradient = create("UIGradient", {
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 180, 180))
+    },
+    Rotation = 90,
+    Parent = users_tab
+})
+
+local input_frame = create("Frame", {
+    Name = "input_frame",
+    Size = UDim2.new(1, -20, 0, 50),
+    Position = UDim2.new(0, 10, 1, -60),
+    BackgroundColor3 = Color3.fromRGB(15, 15, 20),
+    BorderColor3 = Color3.fromRGB(60, 60, 80),
+    BorderSizePixel = 1,
+    Parent = main_frame
 })
 
 local content_frame = create("Frame", {
@@ -249,16 +296,6 @@ users_list_layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(functi
     users_scroll.CanvasSize = UDim2.new(0, 0, 0, users_list_layout.AbsoluteContentSize.Y + 8)
 end)
 
-local input_frame = create("Frame", {
-    Name = "input_frame",
-    Size = UDim2.new(1, -20, 0, 50),
-    Position = UDim2.new(0, 10, 1, -60),
-    BackgroundColor3 = Color3.fromRGB(15, 15, 20),
-    BorderColor3 = Color3.fromRGB(60, 60, 80),
-    BorderSizePixel = 1,
-    Parent = main_frame
-})
-
 local input_box = create("TextBox", {
     Name = "input_box",
     Size = UDim2.new(1, -60, 1, -10),
@@ -282,6 +319,15 @@ create("UIPadding", {
     Parent = input_box
 })
 
+local input_gradient = create("UIGradient", {
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 180, 180))
+    },
+    Rotation = 90,
+    Parent = input_box
+})
+
 local send_button = create("TextButton", {
     Name = "send_button",
     Size = UDim2.new(0, 50, 1, -10),
@@ -294,6 +340,15 @@ local send_button = create("TextButton", {
     TextSize = 11,
     Font = Enum.Font.Code,
     Parent = input_frame
+})
+
+local send_gradient = create("UIGradient", {
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 180, 180))
+    },
+    Rotation = 90,
+    Parent = send_button
 })
 
 local status_label = create("TextLabel", {
@@ -314,17 +369,15 @@ local status_base_text = "Status: Connecting"
 local animating_dots = false
 
 local function update_status(new_text, animate_type)
-    animating_dots = false -- Stop any ongoing animations
+    animating_dots = false
     
     if animate_type == "typewriter" then
         task.spawn(function()
             local old_text = status_label.Text
-            -- Erase old text
             for i = #old_text, 0, -1 do
                 status_label.Text = old_text:sub(1, i)
                 task.wait(0.02)
             end
-            -- Type new text
             for i = 1, #new_text do
                 status_label.Text = new_text:sub(1, i)
                 task.wait(0.02)
@@ -341,7 +394,6 @@ local function update_status(new_text, animate_type)
             end
         end)
     else
-        -- Instant update
         status_label.Text = new_text
     end
 end
@@ -443,19 +495,39 @@ end
 local function switch_tab(tab)
     active_tab = tab
     if tab == "chat" then
-        tween(chat_tab, {BackgroundColor3 = Color3.fromRGB(100, 80, 180), TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
-        tween(users_tab, {BackgroundColor3 = Color3.fromRGB(40, 40, 50), TextColor3 = Color3.fromRGB(150, 150, 160)}, 0.2)
+        tween(chat_tab, {BackgroundColor3 = Color3.fromRGB(100, 80, 180)}, 0.2)
+        tween(chat_tab, {BorderColor3 = Color3.fromRGB(120, 100, 200), TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
+        chat_tab.BorderSizePixel = 2
+        
+        tween(users_tab, {BackgroundColor3 = Color3.fromRGB(40, 40, 50)}, 0.2)
+        tween(users_tab, {BorderColor3 = Color3.fromRGB(60, 60, 80), TextColor3 = Color3.fromRGB(150, 150, 160)}, 0.2)
+        users_tab.BorderSizePixel = 2
+
+        if is_hidden then
+            tween(content_frame, {Size = UDim2.new(1, -20, 1, -95)}, 0.3, Enum.EasingStyle.Quad)
+        else 
+            tween(content_frame, {Size = UDim2.new(1, -20, 1, -145)}, 0.3, Enum.EasingStyle.Quad)
+        end
+        
         chat_scroll.Visible = true
         users_scroll.Visible = false
         input_frame.Visible = not is_hidden
     else
-        tween(users_tab, {BackgroundColor3 = Color3.fromRGB(100, 80, 180), TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
-        tween(chat_tab, {BackgroundColor3 = Color3.fromRGB(40, 40, 50), TextColor3 = Color3.fromRGB(150, 150, 160)}, 0.2)
+        tween(users_tab, {BackgroundColor3 = Color3.fromRGB(100, 80, 180)}, 0.2)
+        tween(users_tab, {BorderColor3 = Color3.fromRGB(120, 100, 200), TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
+        users_tab.BorderSizePixel = 2
+        
+        tween(chat_tab, {BackgroundColor3 = Color3.fromRGB(40, 40, 50)}, 0.2)
+        tween(chat_tab, {BorderColor3 = Color3.fromRGB(60, 60, 80), TextColor3 = Color3.fromRGB(150, 150, 160)}, 0.2)
+        chat_tab.BorderSizePixel = 2
+
+        tween(content_frame, {Size = UDim2.new(1, -20, 1, -95)}, 0.3, Enum.EasingStyle.Quad)
+        
         chat_scroll.Visible = false
         users_scroll.Visible = true
         input_frame.Visible = false
         if not is_hidden then
-            IntegrationService.GetUsers()
+            integration_service.GetUsers()
         else
             update_users_list()
         end
@@ -465,13 +537,15 @@ end
 local function send_message()
     local text = input_box.Text
     if text ~= "" and is_connected and not is_hidden then
-        IntegrationService.SendMessage(text)
+        integration_service.SendMessage(text)
         input_box.Text = ""
         
         local original_size = send_button.Size
-        tween(send_button, {Size = UDim2.new(0, 45, 1, -10)}, 0.1)
+        local original_border = send_button.BorderColor3
+        
+        tween(send_button, {Size = UDim2.new(0, 55, 1, -8), BackgroundColor3 = Color3.fromRGB(100, 160, 100), BorderColor3 = Color3.fromRGB(120, 180, 120)}, 0.1)
         task.wait(0.1)
-        tween(send_button, {Size = original_size}, 0.1, Enum.EasingStyle.Back)
+        tween(send_button, {Size = original_size, BackgroundColor3 = Color3.fromRGB(80, 120, 80), BorderColor3 = Color3.fromRGB(100, 140, 100)}, 0.2, Enum.EasingStyle.Back)
     end
 end
 
@@ -483,48 +557,120 @@ users_tab.MouseButton1Click:Connect(function()
     switch_tab("users")
 end)
 
+hidden_button.Text = "VISIBLE"
+tween(hidden_button, {BackgroundColor3 = Color3.fromRGB(80, 120, 80), TextColor3 = Color3.fromRGB(255, 255, 255), BorderColor3 = Color3.fromRGB(100, 140, 100)}, 0.2)
+
 hidden_button.MouseButton1Click:Connect(function()
+    if is_animating then return end
+    is_animating = true
+    
     is_hidden = not is_hidden
-    IntegrationService.SetHidden(is_hidden)
+    integration_service.SetHidden(is_hidden)
+    
     if is_hidden then
-        hidden_button.Text = "VISIBLE"
-        tween(hidden_button, {BackgroundColor3 = Color3.fromRGB(80, 120, 80), TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
+        hidden_button.Text = "HIDDEN"
+        tween(hidden_button, {BackgroundColor3 = Color3.fromRGB(40, 40, 50), TextColor3 = Color3.fromRGB(150, 150, 160), BorderColor3 = Color3.fromRGB(60, 60, 80)}, 0.2)
+        add_message("SYSTEM", "You are now hidden")
+        
+        tween(main_frame, {Size = UDim2.new(0, 480, 0, 470)}, 0.3, Enum.EasingStyle.Quad)
+        
         if active_tab == "chat" then
-            tween(input_frame, {Position = UDim2.new(0, 10, 1, -10)}, 0.3, Enum.EasingStyle.Back)
+            tween(content_frame, {Size = UDim2.new(1, -20, 1, -95)}, 0.3, Enum.EasingStyle.Quad)
+            tween(input_frame, {Position = UDim2.new(0, 10, 1, -130)}, 0.3, Enum.EasingStyle.Back)
             task.wait(0.3)
             input_frame.Visible = false
             input_frame.Position = UDim2.new(0, 10, 1, -60)
+        else
+            tween(content_frame, {Size = UDim2.new(1, -20, 1, -95)}, 0.3, Enum.EasingStyle.Quad)
+            task.wait(0.3)
         end
     else
-        hidden_button.Text = "HIDDEN"
-        tween(hidden_button, {BackgroundColor3 = Color3.fromRGB(40, 40, 50), TextColor3 = Color3.fromRGB(150, 150, 160)}, 0.2)
+        hidden_button.Text = "VISIBLE"
+        tween(hidden_button, {BackgroundColor3 = Color3.fromRGB(80, 120, 80), TextColor3 = Color3.fromRGB(255, 255, 255), BorderColor3 = Color3.fromRGB(100, 140, 100)}, 0.2)
+        
+        tween(main_frame, {Size = UDim2.new(0, 480, 0, 520)}, 0.3, Enum.EasingStyle.Quad)
+        
         if active_tab == "chat" then
+            tween(content_frame, {Size = UDim2.new(1, -20, 1, -145)}, 0.3, Enum.EasingStyle.Quad)
             input_frame.Visible = true
-            input_frame.Position = UDim2.new(0, 10, 1, -10)
             tween(input_frame, {Position = UDim2.new(0, 10, 1, -60)}, 0.3, Enum.EasingStyle.Back)
+            task.wait(0.3)
+        else
+            task.wait(0.3)
         end
     end
+    
     if active_tab == "users" then
         update_users_list()
     end
+    
+    is_animating = false
 end)
 
 send_button.MouseButton1Click:Connect(send_message)
 
 send_button.MouseEnter:Connect(function()
-    tween(send_button, {BackgroundColor3 = Color3.fromRGB(90, 140, 90)}, 0.15)
+    tween(send_button, {BackgroundColor3 = Color3.fromRGB(90, 140, 90), BorderColor3 = Color3.fromRGB(120, 170, 120), Size = UDim2.new(0, 52, 1, -9)}, 0.15)
 end)
 
 send_button.MouseLeave:Connect(function()
-    tween(send_button, {BackgroundColor3 = Color3.fromRGB(80, 120, 80)}, 0.15)
+    tween(send_button, {BackgroundColor3 = Color3.fromRGB(80, 120, 80), BorderColor3 = Color3.fromRGB(100, 140, 100), Size = UDim2.new(0, 50, 1, -10)}, 0.15)
 end)
 
 close_button.MouseEnter:Connect(function()
-    tween(close_button, {BackgroundColor3 = Color3.fromRGB(180, 60, 70)}, 0.15)
+    tween(close_button, {BackgroundColor3 = Color3.fromRGB(180, 60, 70), BorderColor3 = Color3.fromRGB(200, 80, 90), Size = UDim2.new(0, 27, 0, 27)}, 0.15)
 end)
 
 close_button.MouseLeave:Connect(function()
-    tween(close_button, {BackgroundColor3 = Color3.fromRGB(140, 50, 60)}, 0.15)
+    tween(close_button, {BackgroundColor3 = Color3.fromRGB(140, 50, 60), BorderColor3 = Color3.fromRGB(100, 30, 40), Size = UDim2.new(0, 25, 0, 25)}, 0.15)
+end)
+
+hidden_button.MouseEnter:Connect(function()
+    if is_hidden then
+        tween(hidden_button, {BorderColor3 = Color3.fromRGB(120, 170, 120), Size = UDim2.new(0, 72, 0, 27)}, 0.15)
+    else
+        tween(hidden_button, {BorderColor3 = Color3.fromRGB(80, 80, 100), Size = UDim2.new(0, 72, 0, 27)}, 0.15)
+    end
+end)
+
+hidden_button.MouseLeave:Connect(function()
+    if is_hidden then
+        tween(hidden_button, {BorderColor3 = Color3.fromRGB(100, 140, 100), Size = UDim2.new(0, 70, 0, 25)}, 0.15)
+    else
+        tween(hidden_button, {BorderColor3 = Color3.fromRGB(60, 60, 80), Size = UDim2.new(0, 70, 0, 25)}, 0.15)
+    end
+end)
+
+chat_tab.MouseEnter:Connect(function()
+    if active_tab == "chat" then
+        tween(chat_tab, {BorderColor3 = Color3.fromRGB(140, 120, 220)}, 0.15)
+    else
+        tween(chat_tab, {BorderColor3 = Color3.fromRGB(80, 80, 100)}, 0.15)
+    end
+end)
+
+chat_tab.MouseLeave:Connect(function()
+    if active_tab == "chat" then
+        tween(chat_tab, {BorderColor3 = Color3.fromRGB(120, 100, 200)}, 0.15)
+    else
+        tween(chat_tab, {BorderColor3 = Color3.fromRGB(60, 60, 80)}, 0.15)
+    end
+end)
+
+users_tab.MouseEnter:Connect(function()
+    if active_tab == "users" then
+        tween(users_tab, {BorderColor3 = Color3.fromRGB(140, 120, 220)}, 0.15)
+    else
+        tween(users_tab, {BorderColor3 = Color3.fromRGB(80, 80, 100)}, 0.15)
+    end
+end)
+
+users_tab.MouseLeave:Connect(function()
+    if active_tab == "users" then
+        tween(users_tab, {BorderColor3 = Color3.fromRGB(120, 100, 200)}, 0.15)
+    else
+        tween(users_tab, {BorderColor3 = Color3.fromRGB(60, 60, 80)}, 0.15)
+    end
 end)
 
 input_box.FocusLost:Connect(function(enter_pressed)
@@ -533,26 +679,26 @@ input_box.FocusLost:Connect(function(enter_pressed)
     end
 end)
 
-IntegrationService.OnChatMessage.Event:Connect(function(username, message, timestamp)
+integration_service.OnChatMessage.Event:Connect(function(username, message, timestamp)
     if not is_hidden then
         add_message(username, message)
     end
 end)
 
-IntegrationService.OnSystemMessage.Event:Connect(function(message, timestamp)
+integration_service.OnSystemMessage.Event:Connect(function(message, timestamp)
     if not is_hidden then
         add_message("SYSTEM", message)
     end
 end)
 
-IntegrationService.OnUserListUpdate.Event:Connect(function(users, timestamp)
+integration_service.OnUserListUpdate.Event:Connect(function(users, timestamp)
     if not is_hidden then
         users_list = users
         update_users_list()
     end
 end)
 
-IntegrationService.OnConnected.Event:Connect(function(username, token, hidden)
+integration_service.OnConnected.Event:Connect(function(username, token, hidden)
     current_username = username
     is_connected = true
     is_hidden = hidden
@@ -563,7 +709,7 @@ IntegrationService.OnConnected.Event:Connect(function(username, token, hidden)
     tween(status_label, {TextColor3 = Color3.fromRGB(100, 200, 100)}, 0.3)
 end)
 
-IntegrationService.OnDisconnected.Event:Connect(function()
+integration_service.OnDisconnected.Event:Connect(function()
     is_connected = false
     local old_text = status_label.Text
     status_base_text = "Status: Disconnected"
@@ -571,13 +717,13 @@ IntegrationService.OnDisconnected.Event:Connect(function()
     tween(status_label, {TextColor3 = Color3.fromRGB(200, 100, 100)}, 0.3)
 end)
 
-IntegrationService.OnError.Event:Connect(function(error_message, timestamp)
+integration_service.OnError.Event:Connect(function(error_message, timestamp)
     add_message("ERROR", error_message)
 end)
 
-IntegrationService.Init({
+integration_service.Init({
     serverUrl = "ws://localhost:8888/swimhub",
     heartbeatInterval = 5,
-    autoReconnect = true,
+    autoReconnect = false,
     hidden = false
 })

@@ -18,7 +18,9 @@ CONFIG = {
     "max_message_length": 500,
     "max_username_length": 20,
     "heartbeat_timeout": 10,
-    "discord_webhook": "", # sends all messages sent between users to this webhook
+    "discord_webhooks": [
+
+    ], # sends all messages sent between users to this webhook
     "bridge_servers": [
         #{"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}, # example testing stuff make sure secret matches the other servers bridge secret (you can put as many servers as u want)
     ] 
@@ -175,17 +177,16 @@ def get_all_bridge_users():
     return list(all_users)
 
 def send_to_local_webhook(username, message):
-    if not CONFIG["discord_webhook"]:
-        return
-    
-    try:
-        payload = {
-            "username": username,
-            "content": message
-        }
-        requests.post(CONFIG["discord_webhook"], json=payload, timeout=2)
-    except Exception as e:
-        print(f"Discord webhook error: {e}")
+    for webhook in CONFIG["discord_webhooks"]:
+        try:
+            payload = {
+                "username": username,
+                "content": message
+            }
+
+            requests.post(webhook, json=payload, timeout=2)
+        except Exception as e:
+            print(f"Discord webhook error: {e}")
 
 def bridge_message(username, message):
     for server in CONFIG["bridge_servers"]:

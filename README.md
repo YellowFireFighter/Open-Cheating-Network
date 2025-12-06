@@ -25,19 +25,21 @@ pip install tornado requests
 ### Configuration
 ```python
 CONFIG = {
-    "secret_key": "your-secret-key", # Change this
-    "bridge_secret": "your-bridge-secret", # Change this
+    "secret_key": "swimdroid_is_a_furry", # CHANGE THIS
+    "bridge_secret": "yellow_is_a_bad_bih", # CHANGE THIS
     "max_users_per_ip": 1,
     "rate_limit_messages": 20,
     "rate_limit_window": 10,
     "max_message_length": 500,
     "max_username_length": 20,
     "heartbeat_timeout": 10,
-    "discord_webhook": "",
+    "discord_webhooks": [
+
+    ], # sends all messages sent between users to this webhook
     "bridge_servers": [
-        {"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}
-    ]
-}
+        #{"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}, # example testing stuff make sure secret matches the other servers bridge secret (you can put as many servers as u want)
+    ] 
+} 
 ```
 
 ### Running the Server
@@ -58,7 +60,7 @@ local IntegrationService = loadstring(request({Url = "https://raw.githubusercont
 IntegrationService.Init({
     serverUrl = "ws://your-server.com:8888/swimhub",
     heartbeatInterval = 5,
-    autoReconnect = true,
+    autoReconnect = false,
     hidden = false
 })
 
