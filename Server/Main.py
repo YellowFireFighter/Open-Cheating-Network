@@ -19,7 +19,7 @@ CONFIG = {
     "max_username_length": 20,
     "heartbeat_timeout": 10,
     "discord_webhooks": [
-        ""
+
     ], # sends all messages sent between users to this webhook
     "bridge_servers": [
         #{"url": "http://localhost:8889/chronos", "secret": "yellow_is_a_bad_bih"}, # example testing stuff make sure secret matches the other servers bridge secret (you can put as many servers as u want)
